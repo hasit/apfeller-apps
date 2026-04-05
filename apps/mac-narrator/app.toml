@@ -1,0 +1,46 @@
+id = "mac-narrator"
+summary = "Narrate your Mac's current state with dry British humor."
+description = "Takes a quick local system snapshot and turns it into a short sardonic narration. Supports one-shot mode or continuous watch mode."
+command = "mac-narrator"
+kind = "ai-text"
+requires_commands = ["apfel", "ps", "memory_pressure", "df", "pmset", "uptime", "date"]
+supported_shells = ["fish", "zsh"]
+
+[help]
+usage = "mac-narrator [OPTIONS]"
+examples = ["mac-narrator", "mac-narrator --watch", "mac-narrator --watch -i 30"]
+
+[input]
+mode = "none"
+name = "snapshot"
+required = false
+
+[[args]]
+name = "watch"
+type = "flag"
+long = "watch"
+short = "w"
+description = "Continuously narrate the system state"
+default = 0
+
+[[args]]
+name = "interval"
+type = "integer"
+long = "interval"
+short = "i"
+description = "Seconds between narrations in watch mode"
+default = 60
+
+[prompt]
+system = "You narrate this Mac's current state like a nature documentary. Respond with exactly 1-2 short sentences. Be specific about process names and numbers. Use dry British humor. No bullet points. No lists. Start the response with the provided timestamp in square brackets."
+template = "Narrate the current state of this Mac."
+max_context_tokens = 4096
+max_input_bytes = 2048
+max_output_tokens = 96
+
+[output]
+mode = "text"
+
+[hooks]
+build_prompt = "hooks/build_prompt.sh"
+pre_run = "hooks/pre_run.sh"
