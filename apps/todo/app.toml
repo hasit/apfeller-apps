@@ -1,0 +1,30 @@
+id = "todo"
+summary = "Extract action items from notes with apfel."
+description = "Pulls a short summary, concrete action items, and due dates out of meeting notes, issue text, or scratchpad fragments."
+command = "todo"
+kind = "ai-text"
+requires_commands = ["apfel"]
+supported_shells = ["fish", "zsh"]
+
+[help]
+usage = 'todo [TEXT]'
+examples = ['todo "Send revised contract by Tuesday and book follow-up"', 'pbpaste | todo', 'todo "Alice owns launch checklist. Demo next Thursday at 3pm."']
+
+[input]
+mode = "rest"
+name = "notes"
+required = false
+
+[prompt]
+system = "Read the supplied notes and output exactly 3 labeled fields in this order: summary, action_items, due_dates. summary is one concise sentence. action_items is a semicolon-separated list of concrete actions in imperative form. due_dates is a semicolon-separated list of explicit deadlines or none. No markdown. No bullets. No extra fields."
+template = "Extract tasks from these notes."
+max_context_tokens = 4096
+max_input_bytes = 2600
+max_output_tokens = 160
+
+[output]
+mode = "structured_text"
+fields = ["summary", "action_items", "due_dates"]
+
+[hooks]
+build_prompt = "hooks/build_prompt.sh"

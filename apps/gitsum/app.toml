@@ -1,0 +1,45 @@
+id = "gitsum"
+summary = "Summarize recent git activity with apfel."
+description = "Summarizes recent commits or the current working tree diff into a short changelog-style paragraph."
+command = "gitsum"
+kind = "ai-text"
+requires_commands = ["apfel", "git"]
+supported_shells = ["fish", "zsh"]
+
+[help]
+usage = "gitsum [OPTIONS]"
+examples = ["gitsum", "gitsum -n 20", "gitsum --diff"]
+
+[input]
+mode = "none"
+name = "activity"
+required = false
+
+[[args]]
+name = "count"
+type = "integer"
+long = "count"
+short = "n"
+description = "Number of recent commits to summarize"
+default = 10
+
+[[args]]
+name = "diff"
+type = "flag"
+long = "diff"
+short = "d"
+description = "Summarize the current working tree diff instead of recent commits"
+default = 0
+
+[prompt]
+system = "Summarize the supplied git activity in 2-4 short sentences. Group related work into themes like features, fixes, refactors, or docs. Mention concrete files or areas when they stand out. No bullet points."
+template = "Summarize this git activity."
+max_context_tokens = 4096
+max_input_bytes = 2600
+max_output_tokens = 144
+
+[output]
+mode = "text"
+
+[hooks]
+build_prompt = "hooks/build_prompt.sh"

@@ -1,0 +1,29 @@
+id = "explain"
+summary = "Explain a command, error, or snippet with apfel."
+description = "Turns a short shell command, compiler error, stack trace, or code snippet into a plain-English explanation. Accepts arguments or piped stdin."
+command = "explain"
+kind = "ai-text"
+requires_commands = ["apfel"]
+supported_shells = ["fish", "zsh"]
+
+[help]
+usage = 'explain [TEXT]'
+examples = ['explain "git diff --stat HEAD~1"', 'echo "error: use of undeclared identifier x" | explain', 'pbpaste | explain']
+
+[input]
+mode = "rest"
+name = "input"
+required = false
+
+[prompt]
+system = "Explain the supplied command, error, or code snippet in 2-4 short sentences. Be concrete about what it does, what the important parts mean, and if it looks like an error, the most likely cause or fix. No bullet points. No code fences."
+template = "Explain this input."
+max_context_tokens = 4096
+max_input_bytes = 2400
+max_output_tokens = 144
+
+[output]
+mode = "text"
+
+[hooks]
+build_prompt = "hooks/build_prompt.sh"

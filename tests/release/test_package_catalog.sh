@@ -30,13 +30,14 @@ PATH="$stub_dir:$PATH" sh "$ROOT_DIR/scripts/package_catalog.sh" --output-dir "$
 
 assert_file_exists "$dist_dir/apfeller-catalog.tsv"
 
-cmd_bundle=$(find "$dist_dir" -maxdepth 1 -name 'cmd-*.tar.gz' | head -n 1)
-define_bundle=$(find "$dist_dir" -maxdepth 1 -name 'define-*.tar.gz' | head -n 1)
-oneliner_bundle=$(find "$dist_dir" -maxdepth 1 -name 'oneliner-*.tar.gz' | head -n 1)
+for manifest in "$ROOT_DIR"/apps/*/app.toml; do
+  app_id=$(basename "$(dirname "$manifest")")
+  app_bundle=$(find "$dist_dir" -maxdepth 1 -name "$app_id-*.tar.gz" | head -n 1)
+  assert_file_exists "$app_bundle"
+done
 
+cmd_bundle=$(find "$dist_dir" -maxdepth 1 -name 'cmd-*.tar.gz' | head -n 1)
 assert_file_exists "$cmd_bundle"
-assert_file_exists "$define_bundle"
-assert_file_exists "$oneliner_bundle"
 
 catalog_header=$(head -n 1 "$dist_dir/apfeller-catalog.tsv")
 assert_contains "$catalog_header" 'revision' "catalog should expose generated revisions"

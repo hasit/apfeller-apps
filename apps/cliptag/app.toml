@@ -1,0 +1,30 @@
+id = "cliptag"
+summary = "Extract content tags from local text with apfel."
+description = "Turns notes, copied text, or document snippets into compact tags for topics, actions, emotions, and objects."
+command = "cliptag"
+kind = "ai-text"
+requires_commands = ["apfel"]
+supported_shells = ["fish", "zsh"]
+
+[help]
+usage = 'cliptag [TEXT]'
+examples = ['cliptag "Ship beta on Friday and email design"', 'pbpaste | cliptag', 'cliptag "Customer sounded relieved but still wants a refund"']
+
+[input]
+mode = "rest"
+name = "text"
+required = false
+
+[prompt]
+system = "Read the supplied text and output exactly 4 labeled fields in this order: topics, actions, emotions, objects. Each field should be a short comma-separated list of lowercase tags. Use none when a field has no good tags. Do not invent facts beyond the text. No markdown. No bullets. No extra fields."
+template = "Tag this text."
+max_context_tokens = 4096
+max_input_bytes = 2200
+max_output_tokens = 120
+
+[output]
+mode = "structured_text"
+fields = ["topics", "actions", "emotions", "objects"]
+
+[hooks]
+build_prompt = "hooks/build_prompt.sh"

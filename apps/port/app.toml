@@ -1,0 +1,29 @@
+id = "port"
+summary = "Identify what is using a port with apfel."
+description = "Inspects local listener data for a TCP port and explains what process is likely bound there."
+command = "port"
+kind = "ai-text"
+requires_commands = ["apfel", "lsof", "ps"]
+supported_shells = ["fish", "zsh"]
+
+[help]
+usage = "port PORT"
+examples = ["port 3000", "port 8080", "port 5432"]
+
+[input]
+mode = "single"
+name = "port"
+required = true
+
+[prompt]
+system = "Explain what is listening on the supplied port in 1-3 short sentences. Mention process name, PID, and likely role. If nothing is listening, say that plainly and optionally mention the service commonly associated with the port if it is well known. No bullet points."
+template = "Explain this port."
+max_context_tokens = 4096
+max_input_bytes = 1800
+max_output_tokens = 96
+
+[output]
+mode = "text"
+
+[hooks]
+build_prompt = "hooks/build_prompt.sh"

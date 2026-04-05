@@ -1,0 +1,38 @@
+id = "naming"
+summary = "Suggest names for things with apfel."
+description = "Suggests concise names for functions, files, branches, variables, products, or concepts using a requested naming style."
+command = "naming"
+kind = "ai-text"
+requires_commands = ["apfel"]
+supported_shells = ["fish", "zsh"]
+
+[help]
+usage = 'naming [OPTIONS] [TEXT]'
+examples = ['naming "function that retries HTTP requests with backoff"', 'pbpaste | naming --style snake', 'naming --style title "internal dashboard for release readiness"']
+
+[input]
+mode = "rest"
+name = "description"
+required = false
+
+[[args]]
+name = "style"
+type = "enum"
+long = "style"
+short = "s"
+description = "Naming style for the suggestions"
+default = "mixed"
+choices = ["mixed", "camel", "snake", "kebab", "title"]
+
+[prompt]
+system = "Suggest exactly 5 names. Put each suggestion on its own line as name | reason. Keep each reason under 6 words. Honor the requested naming style. If style is mixed, choose the most natural style for the request and only vary formats when that helps. No numbering. No bullets. No extra text."
+template = "Suggest names."
+max_context_tokens = 4096
+max_input_bytes = 1800
+max_output_tokens = 160
+
+[output]
+mode = "text"
+
+[hooks]
+build_prompt = "hooks/build_prompt.sh"

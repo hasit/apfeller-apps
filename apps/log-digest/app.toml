@@ -1,0 +1,37 @@
+id = "log-digest"
+summary = "Turn noisy logs into a first diagnosis with apfel."
+description = "Reads build, test, or runtime logs from stdin, arguments, or a file and extracts the likely cause plus the first practical next step."
+command = "log-digest"
+kind = "ai-text"
+requires_commands = ["apfel"]
+supported_shells = ["fish", "zsh"]
+
+[help]
+usage = 'log-digest [OPTIONS] [TEXT]'
+examples = ['npm test 2>&1 | log-digest', 'log-digest --file ./build.log', 'log-digest "fatal error: unexpected token"']
+
+[input]
+mode = "rest"
+name = "logs"
+required = false
+
+[[args]]
+name = "file"
+type = "string"
+long = "file"
+short = "f"
+description = "Read logs from a file path"
+
+[prompt]
+system = "Read the supplied logs and output exactly 3 labeled fields in this order: summary, likely_cause, next_step. Keep each field concise. summary explains what failed. likely_cause gives the most probable root cause. next_step gives the first practical action. Use unknown only if the evidence is genuinely insufficient. No markdown. No bullets. No extra fields."
+template = "Digest these logs."
+max_context_tokens = 4096
+max_input_bytes = 3000
+max_output_tokens = 120
+
+[output]
+mode = "structured_text"
+fields = ["summary", "likely_cause", "next_step"]
+
+[hooks]
+build_prompt = "hooks/build_prompt.sh"

@@ -1,0 +1,38 @@
+id = "standup"
+summary = "Generate a daily standup update with apfel."
+description = "Turns recent git activity plus an optional note into a concise standup update with yesterday, today, and blockers fields."
+command = "standup"
+kind = "ai-text"
+requires_commands = ["apfel", "git"]
+supported_shells = ["fish", "zsh"]
+
+[help]
+usage = 'standup [OPTIONS] [NOTE]'
+examples = ['standup', 'standup "Need to call out that QA is waiting on a fix."', 'standup -n 5']
+
+[input]
+mode = "rest"
+name = "note"
+required = false
+
+[[args]]
+name = "count"
+type = "integer"
+long = "count"
+short = "n"
+description = "Number of recent commits to consider"
+default = 10
+
+[prompt]
+system = "Output exactly 3 labeled fields in this order: yesterday, today, blockers. Keep each field concise. yesterday summarizes completed work from the supplied git activity. today proposes the next likely work based on the current branch, diff, and optional note. blockers lists explicit blockers or none. No markdown. No bullets. No extra fields."
+template = "Write a standup update."
+max_context_tokens = 4096
+max_input_bytes = 2600
+max_output_tokens = 144
+
+[output]
+mode = "structured_text"
+fields = ["yesterday", "today", "blockers"]
+
+[hooks]
+build_prompt = "hooks/build_prompt.sh"

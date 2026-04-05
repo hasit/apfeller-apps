@@ -1,0 +1,29 @@
+id = "wtd"
+summary = "Explain what a local directory or project is with apfel."
+description = "Inspects a local directory, key project files, and git metadata to summarize what the project appears to be and how to inspect or run it."
+command = "wtd"
+kind = "ai-text"
+requires_commands = ["apfel"]
+supported_shells = ["fish", "zsh"]
+
+[help]
+usage = "wtd [PATH]"
+examples = ["wtd", "wtd ~/some/project", "wtd ."]
+
+[input]
+mode = "single"
+name = "path"
+required = false
+
+[prompt]
+system = "Summarize the supplied local directory or project in 2-4 short sentences. Identify the likely language or framework, what the project appears to do, and the most likely next command to inspect, build, or run it if that is obvious from the context. If the context is sparse, say only what is clear and suggest the next file to inspect. No bullet points."
+template = "Summarize this directory."
+max_context_tokens = 4096
+max_input_bytes = 2600
+max_output_tokens = 144
+
+[output]
+mode = "text"
+
+[hooks]
+build_prompt = "hooks/build_prompt.sh"

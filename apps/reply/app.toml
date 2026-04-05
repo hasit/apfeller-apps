@@ -1,0 +1,47 @@
+id = "reply"
+summary = "Draft a short reply from local context with apfel."
+description = "Drafts a ready-to-send email or chat reply from pasted context using a requested tone and length."
+command = "reply"
+kind = "ai-text"
+requires_commands = ["apfel"]
+supported_shells = ["fish", "zsh"]
+
+[help]
+usage = 'reply [OPTIONS] [TEXT]'
+examples = ['reply "Can we move the demo to tomorrow?"', 'pbpaste | reply --tone warm', 'reply --tone firm --length short "We still need the invoice today."']
+
+[input]
+mode = "rest"
+name = "context"
+required = false
+
+[[args]]
+name = "tone"
+type = "enum"
+long = "tone"
+short = "t"
+description = "Tone for the drafted reply"
+default = "neutral"
+choices = ["neutral", "warm", "firm"]
+
+[[args]]
+name = "length"
+type = "enum"
+long = "length"
+short = "l"
+description = "Target reply length"
+default = "short"
+choices = ["short", "medium", "long"]
+
+[prompt]
+system = "Draft a ready-to-send reply using the requested tone and length. Output only the reply text. Keep it natural, specific, and consistent with the provided context. If the context is ambiguous, write a cautious reply that briefly asks for the missing clarification. No bullet points. No extra commentary."
+template = "Draft a reply."
+max_context_tokens = 4096
+max_input_bytes = 2200
+max_output_tokens = 192
+
+[output]
+mode = "text"
+
+[hooks]
+build_prompt = "hooks/build_prompt.sh"

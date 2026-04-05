@@ -13,5 +13,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Package catalog test
         run: sh tests/release/test_package_catalog.sh
+      - name: App prompt test
+        run: sh tests/apps/test_hook_prompts.sh
       - name: Schema validation test
         run: sh tests/release/test_app_schema.sh
