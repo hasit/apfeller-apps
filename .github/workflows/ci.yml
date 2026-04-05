@@ -1,0 +1,17 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Package catalog test
+        run: sh tests/release/test_package_catalog.sh
+      - name: Schema validation test
+        run: sh tests/release/test_app_schema.sh

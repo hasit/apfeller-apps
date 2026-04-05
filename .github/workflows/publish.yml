@@ -1,0 +1,51 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - catalog/latest.tsv
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Package catalog
+        run: sh scripts/package_catalog.sh --output-dir dist
+      - name: Publish app releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -eu
+          for bundle in dist/*.tar.gz; do
+            [ -f "$bundle" ] || continue
+            archive_name=$(basename "$bundle")
+            tag=${archive_name%.tar.gz}
+            if gh release view "$tag" >/dev/null 2>&1; then
+              gh release upload "$tag" "$bundle" --clobber
+            else
+              gh release create "$tag" "$bundle" --title "$tag" --notes "Published $tag."
+            fi
+          done
+      - name: Refresh raw catalog
+        run: |
+          set -eu
+          cp dist/apfeller-catalog.tsv catalog/latest.tsv
+      - name: Commit catalog/latest.tsv
+        run: |
+          set -eu
+          if git diff --quiet -- catalog/latest.tsv; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add catalog/latest.tsv
+          git commit -m "Update catalog/latest.tsv"
+          git push
