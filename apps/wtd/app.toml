@@ -1,5 +1,5 @@
 id = "wtd"
-summary = "Explain what a local directory or project is with apfel."
+summary = "Explain what a local directory or project is."
 description = "Inspects a local directory, key project files, and git metadata to summarize what the project appears to be and how to inspect or run it."
 command = "wtd"
 kind = "ai-text"

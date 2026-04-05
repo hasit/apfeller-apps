@@ -1,5 +1,5 @@
 id = "reply"
-summary = "Draft a short reply from local context with apfel."
+summary = "Draft a short reply from local context."
 description = "Drafts a ready-to-send email or chat reply from pasted context using a requested tone and length."
 command = "reply"
 kind = "ai-text"

@@ -1,5 +1,5 @@
 id = "log-digest"
-summary = "Turn noisy logs into a first diagnosis with apfel."
+summary = "Turn noisy logs into a first diagnosis."
 description = "Reads build, test, or runtime logs from stdin, arguments, or a file and extracts the likely cause plus the first practical next step."
 command = "log-digest"
 kind = "ai-text"

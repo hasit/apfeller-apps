@@ -1,5 +1,5 @@
 id = "define"
-summary = "Define a word or phrase with apfel."
+summary = "Define a word or phrase."
 description = "Tiny multilingual dictionary lookup with fixed structured output. Supports input and output language selection plus clipboard copy."
 command = "define"
 kind = "ai-text"

@@ -1,5 +1,5 @@
 id = "todo"
-summary = "Extract action items from notes with apfel."
+summary = "Extract action items from notes."
 description = "Pulls a short summary, concrete action items, and due dates out of meeting notes, issue text, or scratchpad fragments."
 command = "todo"
 kind = "ai-text"

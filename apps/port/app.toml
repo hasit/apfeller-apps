@@ -1,5 +1,5 @@
 id = "port"
-summary = "Identify what is using a port with apfel."
+summary = "Identify what is using a port."
 description = "Inspects local listener data for a TCP port and explains what process is likely bound there."
 command = "port"
 kind = "ai-text"

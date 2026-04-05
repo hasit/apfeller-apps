@@ -1,5 +1,5 @@
 id = "cliptag"
-summary = "Extract content tags from local text with apfel."
+summary = "Extract content tags from local text."
 description = "Turns notes, copied text, or document snippets into compact tags for topics, actions, emotions, and objects."
 command = "cliptag"
 kind = "ai-text"

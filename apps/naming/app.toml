@@ -1,5 +1,5 @@
 id = "naming"
-summary = "Suggest names for things with apfel."
+summary = "Suggest names for things."
 description = "Suggests concise names for functions, files, branches, variables, products, or concepts using a requested naming style."
 command = "naming"
 kind = "ai-text"

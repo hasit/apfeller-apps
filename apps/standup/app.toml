@@ -1,5 +1,5 @@
 id = "standup"
-summary = "Generate a daily standup update with apfel."
+summary = "Generate a daily standup update."
 description = "Turns recent git activity plus an optional note into a concise standup update with yesterday, today, and blockers fields."
 command = "standup"
 kind = "ai-text"

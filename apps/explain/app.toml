@@ -1,5 +1,5 @@
 id = "explain"
-summary = "Explain a command, error, or snippet with apfel."
+summary = "Explain a command, error, or snippet."
 description = "Turns a short shell command, compiler error, stack trace, or code snippet into a plain-English explanation. Accepts arguments or piped stdin."
 command = "explain"
 kind = "ai-text"

@@ -1,5 +1,5 @@
 id = "gitsum"
-summary = "Summarize recent git activity with apfel."
+summary = "Summarize recent git activity."
 description = "Summarizes recent commits or the current working tree diff into a short changelog-style paragraph."
 command = "gitsum"
 kind = "ai-text"
