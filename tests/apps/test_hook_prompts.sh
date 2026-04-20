@@ -199,6 +199,11 @@ naming_minimal=$(printf '%s\n' 'cache' | sh "$ROOT_DIR/apps/naming/hooks/build_p
 assert_contains "$naming_minimal" "cache" "naming should handle minimal input"
 assert_prompt_fits "$ROOT_DIR/apps/naming/app.toml" "$naming_minimal"
 
+define_manifest=$(sed -n '/^\[prompt\]/,/^\[output\]/p' "$ROOT_DIR/apps/define/app.toml")
+assert_contains "$define_manifest" "resolved input language code" "define should require reporting the detected or specified language"
+assert_contains "$define_manifest" "never auto" "define should not echo the auto-detect sentinel in lang output"
+assert_contains "$define_manifest" "exact word or phrase from the word field" "define should require examples to include the defined term"
+
 stub_dir="$tmp_dir/port-stubs"
 mkdir -p "$stub_dir"
 
