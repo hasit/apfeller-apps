@@ -207,12 +207,18 @@ assert_contains "$define_manifest" "exact word or phrase from the word field" "d
 didimean_clue=$(APFELLER_INPUT='word for saying a lot in few words' sh "$ROOT_DIR/apps/didimean/hooks/build_prompt.sh")
 assert_contains "$didimean_clue" "good answers are succinct, concise, and terse" "didimean should steer semantic clues toward the intended meaning"
 assert_contains "$didimean_clue" "Bad answer: verbose" "didimean should guard against opposite-meaning suggestions"
+assert_contains "$didimean_clue" "Never put three candidate-word lines together as one block" "didimean should guard against grouped candidate repetition"
 assert_prompt_fits "$ROOT_DIR/apps/didimean/app.toml" "$didimean_clue"
 
 didimean_misspelling=$(APFELLER_INPUT='sussinct' sh "$ROOT_DIR/apps/didimean/hooks/build_prompt.sh")
 assert_contains "$didimean_misspelling" "good answer: succinct" "didimean should steer common misspellings toward corrected spelling"
 assert_contains "$didimean_misspelling" "sussinct" "didimean should include the provided clue"
 assert_prompt_fits "$ROOT_DIR/apps/didimean/app.toml" "$didimean_misspelling"
+
+didimean_smart=$(APFELLER_INPUT='a very smart man' sh "$ROOT_DIR/apps/didimean/hooks/build_prompt.sh")
+assert_contains "$didimean_smart" "Each suggestion block has exactly one candidate word" "didimean should require one candidate per suggestion block"
+assert_contains "$didimean_smart" "The meaning line must be a definition sentence" "didimean should distinguish meanings from candidate lines"
+assert_prompt_fits "$ROOT_DIR/apps/didimean/app.toml" "$didimean_smart"
 
 stub_dir="$tmp_dir/port-stubs"
 mkdir -p "$stub_dir"

@@ -19,13 +19,22 @@ Return unique suggestions only.
 Do not use bullets, numbering, labels, or markdown.
 Do not start any line with *, -, or a number.
 Each candidate line starts with the word itself, like succinct * /səkˈsɪŋkt/.
+Each suggestion block has exactly one candidate word.
+Never put three candidate-word lines together as one block.
+The meaning line must be a definition sentence, not another word with pronunciation.
+The example line must be a complete sentence using the candidate word.
+Do not repeat the same block.
 
-Output shape:
+Good output shape:
 Did you mean:
 
-word * pronunciation
-meaning
-example sentence
+succinct * /səkˈsɪŋkt/
+Briefly and clearly expressed.
+Her succinct answer explained the issue in one sentence.
+
+concise * /kənˈsaɪs/
+Giving much information clearly in few words.
+The concise report was easy to understand.
 EOF
 
 printf '\nClue:\n%s\n' "$APFELLER_INPUT"
