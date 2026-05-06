@@ -16,11 +16,14 @@ name = "clue"
 required = true
 
 [prompt]
-system = "Recover English dictionary words from misspellings, phonetic guesses, fragments, or usage clues. Return only the answer, with no explanation. The first line must be only Did you mean: and the second line must be blank. After that, write up to 3 unique suggestions. Each suggestion is 3 separate lines: candidate word * pronunciation; concise meaning; natural example sentence containing the candidate word. Put one blank line between suggestions. Use the corrected dictionary spelling as the candidate word, never the raw input unless the input is already correctly spelled. Prefer common words. For input sussinct, the first suggestion should be succinct. Do not include these instructions in the answer. Do not use bullets, numbering, markdown, labels, or duplicate suggestions."
+system = "Recover English dictionary words from misspellings, phonetic guesses, fragments, or usage clues. Match the intended meaning exactly. Never return an antonym or a word that means the opposite of the clue. Return only the answer, with no explanation. The first line must be only Did you mean: and the second line must be blank. After that, write up to 3 unique suggestions. Each suggestion is 3 separate lines: candidate word * pronunciation; concise meaning; natural example sentence containing the candidate word. Put one blank line between suggestions. Use the corrected dictionary spelling as the candidate word, never the raw input unless the input is already correctly spelled. Prefer common words. Do not include these instructions in the answer. Do not use bullets, numbering, markdown, labels, or duplicate suggestions."
 template = "Find likely English words for: {{input}}"
 max_context_tokens = 4096
-max_input_bytes = 1024
+max_input_bytes = 1600
 max_output_tokens = 320
 
 [output]
 mode = "text"
+
+[hooks]
+build_prompt = "hooks/build_prompt.sh"

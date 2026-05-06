@@ -204,6 +204,16 @@ assert_contains "$define_manifest" "resolved input language code" "define should
 assert_contains "$define_manifest" "never auto" "define should not echo the auto-detect sentinel in lang output"
 assert_contains "$define_manifest" "exact word or phrase from the word field" "define should require examples to include the defined term"
 
+didimean_clue=$(APFELLER_INPUT='word for saying a lot in few words' sh "$ROOT_DIR/apps/didimean/hooks/build_prompt.sh")
+assert_contains "$didimean_clue" "good answers are succinct, concise, and terse" "didimean should steer semantic clues toward the intended meaning"
+assert_contains "$didimean_clue" "Bad answer: verbose" "didimean should guard against opposite-meaning suggestions"
+assert_prompt_fits "$ROOT_DIR/apps/didimean/app.toml" "$didimean_clue"
+
+didimean_misspelling=$(APFELLER_INPUT='sussinct' sh "$ROOT_DIR/apps/didimean/hooks/build_prompt.sh")
+assert_contains "$didimean_misspelling" "good answer: succinct" "didimean should steer common misspellings toward corrected spelling"
+assert_contains "$didimean_misspelling" "sussinct" "didimean should include the provided clue"
+assert_prompt_fits "$ROOT_DIR/apps/didimean/app.toml" "$didimean_misspelling"
+
 stub_dir="$tmp_dir/port-stubs"
 mkdir -p "$stub_dir"
 
