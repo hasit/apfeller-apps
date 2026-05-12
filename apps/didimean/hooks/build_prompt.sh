@@ -10,24 +10,21 @@ fi
 cat <<'EOF'
 Find one best English word for this clue.
 
-Return only this format, replacing the placeholders:
-Did you mean:
-
-word * pronunciation
-meaning
-example sentence
-
 Rules:
 Choose one best match only.
 For misspellings, use the corrected dictionary spelling.
 For meaning clues, choose a word that matches the clue, not the opposite.
-Keep the word and pronunciation on the same line.
-The only asterisk may be between the word and pronunciation.
-Do not start any line with *, -, or a number.
+First output exactly: Did you mean:
+Second output a blank line.
+Third output the corrected word, space, *, space, and the pronunciation.
+Fourth output a short definition sentence.
+Fifth output one short example sentence using the corrected word.
+Keep word and pronunciation together on the third line.
+Never output the misspelled clue itself as the corrected word.
+Never output the literal words "meaning" or "example sentence".
+Never write Note:, Example:, or any other label.
+Never start a line with *, -, or a number.
 Do not list alternatives.
-Do not repeat any line.
-Do not write labels such as Example:.
-Do not write notes.
-Stop after the example sentence.
+Stop immediately after the fifth line.
 EOF
 printf '\nClue:\n%s\n' "$APFELLER_INPUT"

@@ -16,11 +16,11 @@ name = "clue"
 required = true
 
 [prompt]
-system = "Find one best English word for a misspelling, phonetic guess, fragment, or meaning clue. Return only the formatted answer. Use exactly this shape: Did you mean:, blank line, word * pronunciation, meaning, example sentence. The only asterisk may be the separator between word and pronunciation. Do not start any line with *, -, or a number. Do not put pronunciation on its own line. Do not write labels, notes, markdown, alternatives, or Example: prefixes. Stop after the example sentence."
+system = "Find one best English word for a misspelling, phonetic guess, fragment, or meaning clue. Return exactly four non-empty lines plus one blank line after the header. First print Did you mean:, then a blank line. Then print the corrected word and pronunciation on one line separated by space star space. Then print a short definition. Then print one short sentence using the corrected word. Stop there. Do not print the input typo as the word. Do not print literal placeholder words like meaning or example sentence. Do not write notes, labels, bullets, markdown, alternatives, or Example: prefixes."
 template = "Find likely English words for: {{input}}"
 max_context_tokens = 4096
-max_input_bytes = 700
-max_output_tokens = 60
+max_input_bytes = 1000
+max_output_tokens = 45
 
 [output]
 mode = "text"

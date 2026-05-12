@@ -207,26 +207,27 @@ assert_contains "$define_manifest" "exact word or phrase from the word field" "d
 didimean_clue=$(APFELLER_INPUT='word for saying a lot in few words' sh "$ROOT_DIR/apps/didimean/hooks/build_prompt.sh")
 assert_contains "$didimean_clue" "Choose one best match only" "didimean should avoid padded alternative suggestions"
 assert_contains "$didimean_clue" "For meaning clues, choose a word that matches the clue, not the opposite" "didimean should guard against opposite-meaning suggestions"
-assert_contains "$didimean_clue" "Return only this format" "didimean should constrain output shape"
+assert_contains "$didimean_clue" "First output exactly: Did you mean:" "didimean should constrain output shape"
 assert_not_contains "$didimean_clue" "up to three" "didimean should no longer request multiple suggestions"
 assert_prompt_fits "$ROOT_DIR/apps/didimean/app.toml" "$didimean_clue"
 
 didimean_misspelling=$(APFELLER_INPUT='sussinct' sh "$ROOT_DIR/apps/didimean/hooks/build_prompt.sh")
 assert_contains "$didimean_misspelling" "sussinct" "didimean should include the provided clue"
-assert_contains "$didimean_misspelling" "word * pronunciation" "didimean should show the exact candidate-line format"
+assert_contains "$didimean_misspelling" "Never output the misspelled clue itself as the corrected word" "didimean should avoid echoing typo candidates"
 assert_prompt_fits "$ROOT_DIR/apps/didimean/app.toml" "$didimean_misspelling"
 
 didimean_canonical=$(APFELLER_INPUT='cannonical' sh "$ROOT_DIR/apps/didimean/hooks/build_prompt.sh")
 assert_not_contains "$didimean_canonical" "Use the canonical spelling in the documentation" "didimean should not provide copyable canned example sentences"
 assert_contains "$didimean_canonical" "For misspellings, use the corrected dictionary spelling" "didimean should correct one-word misspellings"
-assert_contains "$didimean_canonical" "Do not write notes" "didimean should suppress note-style commentary"
-assert_contains "$didimean_canonical" "Do not start any line with *, -, or a number" "didimean should suppress bullet-list formatting"
-assert_contains "$didimean_canonical" "Keep the word and pronunciation on the same line" "didimean should not split pronunciation onto a separate line"
-assert_contains "$didimean_canonical" "Stop after the example sentence" "didimean should stop single-token output after one example"
+assert_contains "$didimean_canonical" "Never output the literal words \"meaning\" or \"example sentence\"" "didimean should avoid copying placeholder words"
+assert_contains "$didimean_canonical" "Never write Note:, Example:, or any other label" "didimean should suppress note-style commentary"
+assert_contains "$didimean_canonical" "Never start a line with *, -, or a number" "didimean should suppress bullet-list formatting"
+assert_contains "$didimean_canonical" "Keep word and pronunciation together on the third line" "didimean should not split pronunciation onto a separate line"
+assert_contains "$didimean_canonical" "Stop immediately after the fifth line" "didimean should stop single-token output after one example"
 assert_prompt_fits "$ROOT_DIR/apps/didimean/app.toml" "$didimean_canonical"
 
 didimean_smart=$(APFELLER_INPUT='a very smart man' sh "$ROOT_DIR/apps/didimean/hooks/build_prompt.sh")
-assert_contains "$didimean_smart" "meaning" "didimean should distinguish meanings from candidate lines"
+assert_contains "$didimean_smart" "Fourth output a short definition sentence" "didimean should distinguish meanings from candidate lines"
 assert_contains "$didimean_smart" "Do not list alternatives" "didimean should not emit repeated alternative groups"
 assert_prompt_fits "$ROOT_DIR/apps/didimean/app.toml" "$didimean_smart"
 
