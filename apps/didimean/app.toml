@@ -3,7 +3,7 @@ summary = "Find the word you almost remembered."
 description = "Suggests the most likely English word from a misspelling, phonetic guess, fragment, or usage clue, with pronunciation, meaning, and example use."
 command = "didimean"
 kind = "ai-text"
-requires_commands = ["apfel"]
+requires_commands = ["apfel", "awk"]
 supported_shells = ["fish", "zsh"]
 
 [help]
@@ -16,11 +16,11 @@ name = "clue"
 required = true
 
 [prompt]
-system = "Find one best English word for a misspelling, phonetic guess, fragment, or meaning clue. Return exactly four non-empty lines plus one blank line after the header. First print Did you mean:, then a blank line. Then print the corrected word and pronunciation on one line separated by space star space. Then print a short definition. Then print one short sentence using the corrected word. Stop there. Do not print the input typo as the word. Do not print literal placeholder words like meaning or example sentence. Do not write notes, labels, bullets, markdown, alternatives, or Example: prefixes."
+system = "Find one best English word for a misspelling, phonetic guess, fragment, or meaning clue. Return only the answer. First line: Did you mean:. Second line blank. After that, exactly three lines: word * pronunciation; short definition; short example sentence. The asterisk belongs inside the word line, not on its own line. Use any provided local dictionary candidate exactly as the word. Do not print the input typo as the word. Do not print labels, notes, bullets, markdown, alternatives, or Example: prefixes."
 template = "Find likely English words for: {{input}}"
 max_context_tokens = 4096
-max_input_bytes = 1000
-max_output_tokens = 45
+max_input_bytes = 1400
+max_output_tokens = 96
 
 [output]
 mode = "text"

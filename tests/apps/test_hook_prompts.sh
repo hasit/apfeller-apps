@@ -214,11 +214,15 @@ assert_prompt_fits "$ROOT_DIR/apps/didimean/app.toml" "$didimean_clue"
 didimean_misspelling=$(APFELLER_INPUT='sussinct' sh "$ROOT_DIR/apps/didimean/hooks/build_prompt.sh")
 assert_contains "$didimean_misspelling" "sussinct" "didimean should include the provided clue"
 assert_contains "$didimean_misspelling" "Never output the misspelled clue itself as the corrected word" "didimean should avoid echoing typo candidates"
+assert_contains "$didimean_misspelling" "Local dictionary candidate: succinct" "didimean should provide a local spelling candidate for common one-word typos"
+assert_contains "$didimean_misspelling" "The third output line must begin with: succinct *" "didimean should anchor the word/pronunciation line to the local candidate"
 assert_prompt_fits "$ROOT_DIR/apps/didimean/app.toml" "$didimean_misspelling"
 
 didimean_canonical=$(APFELLER_INPUT='cannonical' sh "$ROOT_DIR/apps/didimean/hooks/build_prompt.sh")
 assert_not_contains "$didimean_canonical" "Use the canonical spelling in the documentation" "didimean should not provide copyable canned example sentences"
 assert_contains "$didimean_canonical" "For misspellings, use the corrected dictionary spelling" "didimean should correct one-word misspellings"
+assert_contains "$didimean_canonical" "Local dictionary candidate: canonical" "didimean should provide a local spelling candidate for cannonical"
+assert_contains "$didimean_canonical" "The third output line must begin with: canonical *" "didimean should prevent cannonical from becoming the output word"
 assert_contains "$didimean_canonical" "Never output the literal words \"meaning\" or \"example sentence\"" "didimean should avoid copying placeholder words"
 assert_contains "$didimean_canonical" "Never write Note:, Example:, or any other label" "didimean should suppress note-style commentary"
 assert_contains "$didimean_canonical" "Never start a line with *, -, or a number" "didimean should suppress bullet-list formatting"
