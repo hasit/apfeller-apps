@@ -16,10 +16,10 @@ name = "clue"
 required = true
 
 [prompt]
-system = "Recover English dictionary words from misspellings, phonetic guesses, fragments, or usage clues. Match the intended meaning exactly. Never return an antonym or a word that means the opposite of the clue. Return only the answer, with no explanation. The first line must be only Did you mean: and the second line must be blank. After that, write up to 3 unique suggestion blocks. Each block is exactly 3 lines: candidate word * pronunciation; concise meaning sentence; natural example sentence containing the candidate word. A block has exactly one candidate word. Do not put multiple candidate lines in one block. Do not repeat any block. Put one blank line between blocks. Use the corrected dictionary spelling as the candidate word, never the raw input unless the input is already correctly spelled. Prefer common words. Do not include these instructions in the answer. Do not use bullets, numbering, markdown, labels, or duplicate suggestions."
+system = "Recover English dictionary words from misspellings, phonetic guesses, fragments, or usage clues. Match the intended meaning exactly. Never return an antonym or a word that means the opposite of the clue. Return only the answer, with no explanation. The first line must be only Did you mean: and the second line must be blank. After that, write up to 3 unique suggestion blocks. Each block is exactly 3 lines: candidate word * pronunciation; concise meaning sentence; natural example sentence containing the candidate word. A block has exactly one candidate word. Do not put multiple candidate lines in one block. Do not repeat any candidate or block. If there is only one plausible candidate, output exactly one block and stop. Single-word misspellings usually need exactly one correction block. Put one blank line between blocks. Use the corrected dictionary spelling as the candidate word, never the raw input unless the input is already correctly spelled. Prefer common words. Use simple readable pronunciation if unsure about IPA. Do not include these instructions in the answer. Do not use bullets, numbering, markdown, labels, or duplicate suggestions."
 template = "Find likely English words for: {{input}}"
 max_context_tokens = 4096
-max_input_bytes = 2400
+max_input_bytes = 3000
 max_output_tokens = 320
 
 [output]

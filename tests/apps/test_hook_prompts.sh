@@ -215,9 +215,18 @@ assert_contains "$didimean_misspelling" "good answer: succinct" "didimean should
 assert_contains "$didimean_misspelling" "sussinct" "didimean should include the provided clue"
 assert_prompt_fits "$ROOT_DIR/apps/didimean/app.toml" "$didimean_misspelling"
 
+didimean_canonical=$(APFELLER_INPUT='cannonical' sh "$ROOT_DIR/apps/didimean/hooks/build_prompt.sh")
+assert_contains "$didimean_canonical" "Good output for \"cannonical\"" "didimean should include a single-correction example for common misspellings"
+assert_contains "$didimean_canonical" "Bad output for \"cannonical\": three repeated canonical blocks" "didimean should reject repeated single-candidate blocks"
+assert_contains "$didimean_canonical" "If there is only one plausible candidate, output exactly one block and stop" "didimean should avoid padding single-token corrections"
+assert_contains "$didimean_canonical" "Input type: single token" "didimean should classify one-word inputs"
+assert_contains "$didimean_canonical" "For this input, output exactly one suggestion block" "didimean should give single-token inputs a one-block instruction"
+assert_prompt_fits "$ROOT_DIR/apps/didimean/app.toml" "$didimean_canonical"
+
 didimean_smart=$(APFELLER_INPUT='a very smart man' sh "$ROOT_DIR/apps/didimean/hooks/build_prompt.sh")
 assert_contains "$didimean_smart" "Each suggestion block has exactly one candidate word" "didimean should require one candidate per suggestion block"
 assert_contains "$didimean_smart" "The meaning line must be a definition sentence" "didimean should distinguish meanings from candidate lines"
+assert_contains "$didimean_smart" "Input type: usage clue or phrase" "didimean should classify phrase inputs"
 assert_prompt_fits "$ROOT_DIR/apps/didimean/app.toml" "$didimean_smart"
 
 stub_dir="$tmp_dir/port-stubs"
