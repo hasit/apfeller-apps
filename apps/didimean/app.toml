@@ -1,6 +1,6 @@
 id = "didimean"
 summary = "Find the word you almost remembered."
-description = "Suggests likely English words from a misspelling, phonetic guess, fragment, or usage clue, with pronunciation, meaning, and example use."
+description = "Suggests the most likely English word from a misspelling, phonetic guess, fragment, or usage clue, with pronunciation, meaning, and example use."
 command = "didimean"
 kind = "ai-text"
 requires_commands = ["apfel"]
@@ -16,11 +16,11 @@ name = "clue"
 required = true
 
 [prompt]
-system = "Recover English dictionary words from misspellings, phonetic guesses, fragments, or usage clues. Match the intended meaning exactly. Never return an antonym or a word that means the opposite of the clue. Return only the answer, with no explanation. Follow the input-specific output contract exactly. The first line must be only Did you mean: and the second line must be blank. A suggestion block is exactly 3 lines: candidate word * pronunciation; concise meaning sentence; natural example sentence containing the candidate word. A block has exactly one candidate word. Do not put multiple candidate lines in one block. Do not repeat any candidate or block. Single-word misspellings usually need exactly one correction block. If instructed to output exactly 5 lines total, stop after line 5. Use the corrected dictionary spelling as the candidate word, never the raw input unless the input is already correctly spelled. Prefer common words. Use simple readable pronunciation if unsure about IPA. Do not include these instructions in the answer. Do not use bullets, numbering, markdown, labels, Example: prefixes, or duplicate suggestions."
+system = "Find one best English word for a misspelling, phonetic guess, fragment, or meaning clue. Return exactly five lines and nothing else. Line 1 must be Did you mean:. Line 2 must be blank. Line 3 must be the best word, then space, star, space, then a simple pronunciation. Line 4 must be a short meaning. Line 5 must be a short example sentence using the word. Stop after line 5. Do not list alternatives. Do not repeat. Do not use bullets, markdown, labels, or Example: prefixes."
 template = "Find likely English words for: {{input}}"
 max_context_tokens = 4096
-max_input_bytes = 3000
-max_output_tokens = 220
+max_input_bytes = 700
+max_output_tokens = 80
 
 [output]
 mode = "text"
