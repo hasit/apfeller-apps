@@ -9,58 +9,61 @@ fi
 
 case "$APFELLER_INPUT" in
   *" "*)
-    input_kind="usage clue or phrase"
-    input_rule="For this input, output up to three genuinely different suggestion blocks."
-    ;;
-  *)
-    input_kind="single token"
-    input_rule="For this input, output exactly one suggestion block unless two genuinely different common words are plausible. Do not pad to three."
-    ;;
-esac
-
-cat <<'EOF'
-Find likely English dictionary words for the clue below.
+    cat <<'EOF'
+Find likely English dictionary words for the usage clue or phrase below.
 
 Rules:
 If the clue starts with "word for" or describes a meaning, suggest words that mean the described idea.
 Do not suggest the opposite meaning.
 For "word for saying a lot in few words", good answers are succinct, concise, and terse. Bad answer: verbose.
-For "sussinct" or "susinct", good answer: succinct.
 Return unique suggestions only.
-If there is only one plausible candidate, output exactly one block and stop.
-For single-word misspellings, usually output exactly one correction block.
-If you are about to repeat a candidate word, stop instead.
-Do not use bullets, numbering, labels, or markdown.
-Do not start any line with *, -, or a number.
-Each candidate line starts with the word itself, like succinct * /səkˈsɪŋkt/.
+Output up to three genuinely different suggestion blocks.
 Each suggestion block has exactly one candidate word.
 Never put three candidate-word lines together as one block.
 The meaning line must be a definition sentence, not another word with pronunciation.
 The example line must be a complete sentence using the candidate word.
-Do not repeat the same block.
-Use simple readable pronunciation when IPA is uncertain.
+Do not repeat any candidate or block.
+Do not use bullets, numbering, labels, markdown, or lines that start with *, -, or a number.
 
-Good output for "cannonical":
-Did you mean:
+Output contract:
+Line 1 is exactly: Did you mean:
+Line 2 is blank.
+Then write one or more blocks.
+Each block has exactly 3 lines:
+candidate word * pronunciation
+concise definition sentence
+natural example sentence using the candidate word
+Put one blank line between blocks.
+Stop immediately after the final example sentence.
 
-canonical * kuh-NON-ih-kul
-Accepted as authoritative or standard.
-Use the canonical spelling in the documentation.
-
-Bad output for "cannonical": three repeated canonical blocks.
-
-Good output shape:
-Did you mean:
-
-succinct * /səkˈsɪŋkt/
-Briefly and clearly expressed.
-Her succinct answer explained the issue in one sentence.
-
-concise * /kənˈsaɪs/
-Giving much information clearly in few words.
-The concise report was easy to understand.
+Input type: usage clue or phrase
 EOF
+    ;;
+  *)
+    cat <<'EOF'
+Find the likely corrected English dictionary word for the single-token clue below.
 
-printf '\nInput type: %s\n' "$input_kind"
-printf '%s\n' "$input_rule"
+Rules:
+Single-word misspellings usually need exactly one correction block.
+If there is only one plausible candidate, output exactly one block and stop.
+If you are about to repeat a candidate word, stop instead.
+Use the corrected dictionary spelling, never the raw input unless it is already correctly spelled.
+Use simple readable pronunciation when IPA is uncertain.
+Do not use bullets, numbering, labels, markdown, or lines that start with *, -, or a number.
+Do not write "Example:".
+Do not output extra examples.
+
+Output contract:
+Output exactly 5 lines total.
+Line 1 is exactly: Did you mean:
+Line 2 is blank.
+Line 3 is: corrected word * pronunciation
+Line 4 is: concise definition sentence
+Line 5 is: natural example sentence using the corrected word
+Stop immediately after line 5.
+
+Input type: single token
+EOF
+    ;;
+esac
 printf '\nClue:\n%s\n' "$APFELLER_INPUT"
